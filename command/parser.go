@@ -5,6 +5,7 @@ import (
 	"github.com/uniplaces/carbon"
 	"strconv"
 		"errors"
+	"github.com/k0kubun/pp"
 )
 
 type TimeDurationParser struct {
@@ -21,6 +22,7 @@ func (s *TimeDurationParser) getDiff(sep string) int {
 	if err != nil {
 		panic(err)
 	}
+	pp.Println(i)
 	return i
 }
 

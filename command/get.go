@@ -9,6 +9,40 @@ import (
 	"strings"
 )
 
+type Lines struct {
+	lines []string
+}
+
+func (s *Lines) Get(isReverse bool) chan string {
+	if isReverse {
+		return s.Reverse()
+	} else {
+		return s.Normal()
+	}
+}
+
+func (s *Lines) Normal() chan string {
+	ret := make(chan string)
+	go func() {
+		for _, line := range s.lines {
+			ret <- line
+		}
+		close(ret)
+	}()
+	return ret
+}
+
+func (s *Lines) Reverse() chan string {
+	ret := make(chan string)
+	go func() {
+		for i, _ := range s.lines {
+			ret <- s.lines[len(s.lines)-1-i]
+		}
+		close(ret)
+	}()
+	return ret
+}
+
 // git log --after="2015-09-25 00:00:00" --before="2015-09-26 00:00:00" --date=local --pretty=format:"%h: %ad %an: %s" --author "Kazuhiko Hotta"
 func CmdGet(c *cli.Context) {
 	config, err := ioutil.ReadFile(".dailylog")
@@ -36,8 +70,9 @@ func CmdGet(c *cli.Context) {
 		fmt.Print(err.Error())
 		os.Exit(1)
 	}
-	lines := strings.Split(string(out), "\n")
-	for _, line := range lines {
+	LineStruct := &Lines{strings.Split(string(out), "\n")}
+	lines := LineStruct.Get(c.Bool("reverse"))
+	for line := range lines {
 		fmt.Println(strings.Trim(line, "\""))
 	}
 	os.Exit(0)

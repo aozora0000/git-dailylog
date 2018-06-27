@@ -32,6 +32,10 @@ var Commands = []cli.Command{
 				Value: "",
 				Usage: "commit author filter",
 			},
+			cli.BoolFlag{
+				Name: "reverse",
+				Usage: "reverse output",
+			},
 		},
 	},
 }

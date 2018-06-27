@@ -4,6 +4,7 @@ commit log to dailylog
 
 ## Description
 
+![ScreenShot](./sample/ss.png)
 
 ## Usage
 

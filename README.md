@@ -14,6 +14,7 @@ $ git dailylog get                          //get today commit log in .git dir
 $ git dailylog get --ago today              //get today commit log in .git dir
 $ git dailylog get --ago 2days              //get 2days ago from today commit log
 $ git dailylog get --ago 2days --author "author" //get 2days ago from today commit log filterd author
+$ git dailylog get --reverse                //get today commit log reverse
 ```
 
 ## Format

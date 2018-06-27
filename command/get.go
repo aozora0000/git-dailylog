@@ -30,7 +30,7 @@ func CmdGet(c *cli.Context) {
 	if author != "" {
 		args = append(args, "--author=\"" + author + "\"")
 	}
-	fmt.Println(strings.Join(args, " "))
+
 	out, _ := exec.Command("git", args...).CombinedOutput()
 	if err != nil {
 		fmt.Print(err.Error())

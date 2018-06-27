@@ -16,6 +16,15 @@ $ git dailylog get --ago 2days              //get 2days ago from today commit lo
 $ git dailylog get --ago 2days --author "author" //get 2days ago from today commit log filterd author
 ```
 
+## Format
+
+Reference: [Git log format string cheatsheet](https://devhints.io/git-log-format)
+
+```--pretty="format:[format]"```
+```.dailylog
+"%h: %ad %an: %s"
+```
+
 ## Install
 To install, use `go get`:
 

@@ -13,7 +13,7 @@ func main() {
 	app.Version = Version
 	app.Author = "aozora0000"
 	app.Email = "aozora0000@gmail.com"
-	app.Usage = "Garbage Commit Log"
+	app.Usage = "Garbage Commit Log."
 
 	app.Flags = GlobalFlags
 	app.Commands = Commands

@@ -13,13 +13,13 @@ var GlobalFlags = []cli.Flag{}
 var Commands = []cli.Command{
 	{
 		Name:   "init",
-		Usage:  "Initialize Dailylog Fotmat File",
+		Usage:  "Initialize dailylog fotmat file. format reference: https://devhints.io/git-log-format",
 		Action: command.CmdInit,
 		Flags:  []cli.Flag{},
 	},
 	{
 		Name:   "get",
-		Usage:  "",
+		Usage:  "Get abarge commit log formatted from .dailylog",
 		Action: command.CmdGet,
 		Flags:  []cli.Flag{
 			cli.StringFlag{

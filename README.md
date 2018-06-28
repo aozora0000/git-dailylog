@@ -14,6 +14,15 @@ commit log to dailylog
 $ git dailylog init
 ```
 
+#### Log Format File .dailylog
+
+Reference: [Git log format string cheatsheet](https://devhints.io/git-log-format)
+
+```--pretty="format:[format]"```
+```.dailylog
+"%h: %ad %an: %s"
+```
+
 ### Get
 get commit log from:time.start to:today.end
 
@@ -46,14 +55,6 @@ $ git dailylog get today --reverse
 $ git dailylog get today --author=aozora0000
 ```
 
-## Log Format File .dailylog
-
-Reference: [Git log format string cheatsheet](https://devhints.io/git-log-format)
-
-```--pretty="format:[format]"```
-```.dailylog
-"%h: %ad %an: %s"
-```
 
 ## Install
 To install, use `go get`:

@@ -5,8 +5,7 @@ import (
 	"github.com/uniplaces/carbon"
 	"strconv"
 		"errors"
-	"github.com/k0kubun/pp"
-	"time"
+		"time"
 )
 
 
@@ -24,11 +23,14 @@ type TimeDurationParser struct {
 }
 
 func (s *TimeDurationParser) getDiff(sep string) int {
-	i, err := strconv.Atoi(strings.Split(s.t, sep)[0])
+	num := "1"
+	if strings.Split(s.t, sep)[0] != "" {
+		num = strings.Split(s.t, sep)[0]
+	}
+	i, err := strconv.Atoi(num)
 	if err != nil {
 		panic(err)
 	}
-	pp.Println(i)
 	return i
 }
 
@@ -45,6 +47,18 @@ func (s *TimeDurationParser) GetToday() BetweenTimestamps {
 	return BetweenTimestamps{
 		From: from,
 		To:   to,
+	}
+}
+
+func (s *TimeDurationParser) IsYesterday() bool {
+	return strings.Contains(s.t, "yesterday")
+}
+
+func (s *TimeDurationParser) GetYesterday() BetweenTimestamps {
+	today := s.GetToday()
+	return BetweenTimestamps{
+		From: today.From.SubDays(1),
+		To: today.To,
 	}
 }
 
@@ -87,6 +101,9 @@ func (s *TimeDurationParser) GetYear() BetweenTimestamps {
 func (s *TimeDurationParser) Parse() BetweenTimestamps {
 	if s.IsToday() {
 		return s.GetToday()
+	}
+	if s.IsYesterday() {
+		return s.GetYesterday()
 	}
 	if s.IsDay() {
 		return s.GetDay()

@@ -23,11 +23,6 @@ var Commands = []cli.Command{
 		Action: command.CmdGet,
 		Flags:  []cli.Flag{
 			cli.StringFlag{
-				Name: "ago",
-				Value: "today",
-				Usage: "gabarge commit log at day. [today, 7day, 1week, 1years]",
-			},
-			cli.StringFlag{
 				Name: "author",
 				Value: "",
 				Usage: "commit author filter",

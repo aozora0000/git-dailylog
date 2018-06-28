@@ -8,16 +8,45 @@ commit log to dailylog
 
 ## Usage
 
+### Initialize
+> create `.dailylog` format file
 ```console
-$ git dailylog init                         //create .dailylog format file
-$ git dailylog get                          //get today commit log in .git dir
-$ git dailylog get --ago today              //get today commit log in .git dir
-$ git dailylog get --ago 2days              //get 2days ago from today commit log
-$ git dailylog get --ago 2days --author "author" //get 2days ago from today commit log filterd author
-$ git dailylog get --reverse                //get today commit log reverse
+$ git dailylog init
 ```
 
-## Format
+### Get
+get commit log from:time.start to:today.end
+
+```console
+$ git dailylog get [time: default today]
+```
+
+#### TimeFormat
+
+> for example Today = 2018-06-28
+
+| format | from | to |
+| :---: | :---: | :---: |
+| today | 2018-06-28 00:00:00 | 2018-06-28 23:59:59 |
+| yesterday | 2018-06-27 00:00:00 | 2018-06-28 23:59:59 |
+| 2days | 2018-06-26 00:00:00 | 2018-06-28 23:59:59 |
+| 1weeks | 2018-06-21 00:00:00 | 2018-06-28 23:59:59 |
+| 1month | 2017-05-28 00:00:00 | 2018-06-28 23:59:59 |
+| 1years | 2017-06-28 00:00:00 | 2018-06-28 23:59:59 |
+
+#### Options
+##### Reverse
+> default git log Desc. Asc git log use when reverse option.  
+```console
+$ git dailylog get today --reverse
+```
+
+##### Author Filter
+```console
+$ git dailylog get today --author=aozora0000
+```
+
+## Log Format File .dailylog
 
 Reference: [Git log format string cheatsheet](https://devhints.io/git-log-format)
 

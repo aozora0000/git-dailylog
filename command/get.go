@@ -7,7 +7,8 @@ import (
 	"os"
 	"strings"
 	"os/exec"
-	)
+	"github.com/k0kubun/pp"
+)
 
 type Lines struct {
 	lines []string
@@ -49,8 +50,13 @@ func CmdGet(c *cli.Context) {
 	if err != nil {
 		panic(err)
 	}
+	var ago = "today"
 
-	parser := &TimeDurationParser{c.String("ago")}
+	if c.Args().Get(0) != "" {
+		ago = c.Args().Get(0)
+	}
+
+	parser := &TimeDurationParser{ago}
 	author := c.String("author")
 
 	timestamps := parser.Parse()
@@ -58,17 +64,19 @@ func CmdGet(c *cli.Context) {
 	var args = []string{
 		"log",
 		"--date=iso",
+		"--branches",
+		"--tags",
 		"--pretty=format:" + string(config),
 		"--after=\"" + timestamps.From.String() + "\"",
-		"--before==\"" + timestamps.To.String() + "\"",
+		"--before=\"" + timestamps.To.String() + "\"",
 	}
 	if author != "" {
-		args = append(args, "--author=\"" + author + "\"")
+		args = append(args, "--author=" + author)
 	}
 
-	out, _ := exec.Command("git", args...).CombinedOutput()
+	out, err := exec.Command("git", args...).CombinedOutput()
 	if err != nil {
-		fmt.Print(err.Error())
+		pp.Println(err.Error())
 		os.Exit(1)
 	}
 	lines := &Lines{strings.Split(string(out), "\n")}

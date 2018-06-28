@@ -1,3 +1,44 @@
+## 0.3.0 (2018-06-27)
+
+Add Yesterday Duration
+
+### Added
+
+- Add Yesterday Duration
+
+### Deprecated
+
+- Nothing
+
+### Removed
+
+- Nothing
+
+### Fixed
+
+- Author Filter Fixed
+
+## 0.2.0 (2018-06-27)
+
+Add Reverse Option
+
+### Added
+
+- Add Reverse Option
+
+### Deprecated
+
+- Nothing
+
+### Removed
+
+- Nothing
+
+### Fixed
+
+- Nothing
+
+
 ## 0.1.0 (2018-06-27)
 
 Initial release

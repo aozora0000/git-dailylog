@@ -3,10 +3,10 @@ package command
 import (
 	"github.com/codegangsta/cli"
 	"io/ioutil"
-		"os/exec"
 	"fmt"
 	"os"
 	"strings"
+	"os/exec"
 	)
 
 type Lines struct {
@@ -54,10 +54,11 @@ func CmdGet(c *cli.Context) {
 	author := c.String("author")
 
 	timestamps := parser.Parse()
+
 	var args = []string{
 		"log",
 		"--date=iso",
-		"--pretty=tformat:" + string(config),
+		"--pretty=format:" + string(config),
 		"--after=\"" + timestamps.From.String() + "\"",
 		"--before==\"" + timestamps.To.String() + "\"",
 	}
@@ -72,8 +73,7 @@ func CmdGet(c *cli.Context) {
 	}
 	lines := &Lines{strings.Split(string(out), "\n")}
 	for line := range lines.Get(c.Bool("reverse")) {
-		fmt.Println(strings.Replace(strings.Replace(strings.Trim(line, "\""), "\\n", ":break:", -1), ":break:", `
-`, -1))
+		fmt.Println(strings.Trim(line, "\""))
 	}
 	os.Exit(0)
 }

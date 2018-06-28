@@ -13,7 +13,7 @@ var GlobalFlags = []cli.Flag{}
 var Commands = []cli.Command{
 	{
 		Name:   "init",
-		Usage:  "Initialize dailylog fotmat file. format reference: https://devhints.io/git-log-format",
+		Usage:  "Initialize dailylog fotmat file. format reference: https://git-scm.com/docs/pretty-formats",
 		Action: command.CmdInit,
 		Flags:  []cli.Flag{},
 	},

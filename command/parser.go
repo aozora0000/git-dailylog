@@ -6,15 +6,21 @@ import (
 	"strconv"
 		"errors"
 	"github.com/k0kubun/pp"
+	"time"
 )
 
-type TimeDurationParser struct {
-	t string
-}
 
 type BetweenTimestamps struct {
 	From *carbon.Carbon
 	To   *carbon.Carbon
+}
+
+func (s *BetweenTimestamps) IsBetween(t time.Time) bool {
+	return s.From.Timestamp() <= t.Unix() && t.Unix() <= s.To.Timestamp()
+}
+
+type TimeDurationParser struct {
+	t string
 }
 
 func (s *TimeDurationParser) getDiff(sep string) int {

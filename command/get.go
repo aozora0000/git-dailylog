@@ -7,7 +7,7 @@ import (
 	"fmt"
 	"os"
 	"strings"
-)
+	)
 
 type Lines struct {
 	lines []string
@@ -57,7 +57,7 @@ func CmdGet(c *cli.Context) {
 	var args = []string{
 		"log",
 		"--date=iso",
-		"--pretty=format:" + string(config),
+		"--pretty=tformat:" + string(config),
 		"--after=\"" + timestamps.From.String() + "\"",
 		"--before==\"" + timestamps.To.String() + "\"",
 	}
@@ -70,10 +70,10 @@ func CmdGet(c *cli.Context) {
 		fmt.Print(err.Error())
 		os.Exit(1)
 	}
-	LineStruct := &Lines{strings.Split(string(out), "\n")}
-	lines := LineStruct.Get(c.Bool("reverse"))
-	for line := range lines {
-		fmt.Println(strings.Trim(line, "\""))
+	lines := &Lines{strings.Split(string(out), "\n")}
+	for line := range lines.Get(c.Bool("reverse")) {
+		fmt.Println(strings.Replace(strings.Replace(strings.Trim(line, "\""), "\\n", ":break:", -1), ":break:", `
+`, -1))
 	}
 	os.Exit(0)
 }

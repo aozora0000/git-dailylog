@@ -56,6 +56,14 @@ $ git dailylog get today --author=aozora0000
 
 
 ## Install
+
+### homebrew
+```console
+$ brew tap aozora0000/git-dailylog
+$ brew install git-dailylog
+```
+
+### go get
 To install, use `go get`:
 
 ```console

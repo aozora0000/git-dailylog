@@ -2,6 +2,12 @@
 
 
 [[projects]]
+  name = "github.com/Atrox/homedir"
+  packages = ["."]
+  revision = "06c445c1ff71259ff8653dd17941b062b4c7f457"
+  version = "v1.0.0"
+
+[[projects]]
   name = "github.com/codegangsta/cli"
   packages = ["."]
   revision = "cfb38830724cc34fedffe9a2a29fb54fa9169cd1"
@@ -43,6 +49,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "ef1844c2f815bd3e74428777e5ff238c2ee65fa59190b39963bd4a971fef8fc6"
+  inputs-digest = "aeacdf017864115ad25b4f200669a8a5943cfd9aac1b469370cad86e0a25ca1f"
   solver-name = "gps-cdcl"
   solver-version = 1

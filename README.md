@@ -9,11 +9,10 @@ commit log to dailylog
 ## Usage
 
 ### Initialize
-> create `.dailylog` format file
+> create `.dailylog` format file or copy from ~/.dailylog 
 ```console
 $ git dailylog init
 ```
-
 #### Log Format File .dailylog
 
 Reference: [Git log format string cheatsheet](https://devhints.io/git-log-format)

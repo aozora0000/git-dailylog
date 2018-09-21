@@ -36,3 +36,6 @@
 [[constraint]]
   name = "github.com/uniplaces/carbon"
   version = "0.1.2"
+[[constraint]]
+  name = "github.com/Atrox/homedir"
+  version = "1.0.0"

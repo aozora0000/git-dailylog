@@ -1,3 +1,23 @@
+## 0.4.0 (2018-09-21)
+
+Initialize File Copy When Exist ~/.dailylog
+
+### Added
+
+- Initialize File Copy When Exist ~/.dailylog
+
+### Deprecated
+
+- Nothing
+
+### Removed
+
+- Nothing
+
+### Fixed
+
+- Author Filter Fixed
+
 ## 0.3.0 (2018-06-27)
 
 Add Yesterday Duration

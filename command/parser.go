@@ -1,13 +1,14 @@
 package command
 
 import (
-	"strings"
+	"errors"
+	"github.com/k0kubun/pp"
 	"github.com/uniplaces/carbon"
+	"os"
 	"strconv"
-		"errors"
-		"time"
+	"strings"
+	"time"
 )
-
 
 type BetweenTimestamps struct {
 	From *carbon.Carbon
@@ -29,7 +30,8 @@ func (s *TimeDurationParser) getDiff(sep string) int {
 	}
 	i, err := strconv.Atoi(num)
 	if err != nil {
-		panic(err)
+		pp.Println(err.Error())
+		os.Exit(1)
 	}
 	return i
 }
@@ -41,7 +43,8 @@ func (s *TimeDurationParser) IsToday() bool {
 func (s *TimeDurationParser) GetToday() BetweenTimestamps {
 	from, err := carbon.Create(carbon.Now().Year(), carbon.Now().Month(), carbon.Now().Day(), 0, 0, 0, 0, "Local")
 	if err != nil {
-		panic(err)
+		pp.Println(err.Error())
+		os.Exit(1)
 	}
 	to := from.AddDays(1).SubSeconds(1)
 	return BetweenTimestamps{
@@ -58,7 +61,7 @@ func (s *TimeDurationParser) GetYesterday() BetweenTimestamps {
 	today := s.GetToday()
 	return BetweenTimestamps{
 		From: today.From.SubDays(1),
-		To: today.To,
+		To:   today.To,
 	}
 }
 
@@ -70,7 +73,7 @@ func (s *TimeDurationParser) GetDay() BetweenTimestamps {
 	today := s.GetToday()
 	return BetweenTimestamps{
 		From: today.From.SubDays(s.getDiff("day")),
-		To: today.To,
+		To:   today.To,
 	}
 }
 
@@ -82,7 +85,7 @@ func (s *TimeDurationParser) GetWeek() BetweenTimestamps {
 	today := s.GetToday()
 	return BetweenTimestamps{
 		From: today.From.SubWeeks(s.getDiff("week")),
-		To: today.To,
+		To:   today.To,
 	}
 }
 
@@ -94,7 +97,7 @@ func (s *TimeDurationParser) GetYear() BetweenTimestamps {
 	today := s.GetToday()
 	return BetweenTimestamps{
 		From: today.From.SubYears(s.getDiff("year")),
-		To: today.To,
+		To:   today.To,
 	}
 }
 
@@ -114,5 +117,7 @@ func (s *TimeDurationParser) Parse() BetweenTimestamps {
 	if s.IsYear() {
 		return s.GetYear()
 	}
-	panic(errors.New("DateParseError"))
+	pp.Println(errors.New("DateParseError").Error())
+	os.Exit(1)
+	return BetweenTimestamps{}
 }

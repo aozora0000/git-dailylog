@@ -1,14 +1,32 @@
 package command
 
 import (
-	"github.com/codegangsta/cli"
-	"io/ioutil"
 	"fmt"
-	"os"
-	"strings"
-	"os/exec"
+	"github.com/codegangsta/cli"
 	"github.com/k0kubun/pp"
+	"io/ioutil"
+	"os"
+	"os/exec"
+	"path/filepath"
+	"strings"
 )
+
+var CmdGetCommand = cli.Command{
+	Name:   "get",
+	Usage:  "Get abarge commit log formatted from .dailylog",
+	Action: CmdGet,
+	Flags: []cli.Flag{
+		cli.StringFlag{
+			Name:  "author",
+			Value: "",
+			Usage: "commit author filter",
+		},
+		cli.BoolFlag{
+			Name:  "reverse",
+			Usage: "reverse output",
+		},
+	},
+}
 
 type Lines struct {
 	lines []string
@@ -36,7 +54,7 @@ func (s *Lines) Normal() chan string {
 func (s *Lines) Reverse() chan string {
 	ret := make(chan string)
 	go func() {
-		for i, _ := range s.lines {
+		for i := range s.lines {
 			ret <- s.lines[len(s.lines)-1-i]
 		}
 		close(ret)
@@ -46,9 +64,15 @@ func (s *Lines) Reverse() chan string {
 
 // git log --after="2015-09-25 00:00:00" --before="2015-09-26 00:00:00" --date=local --pretty=format:"%h: %ad %an: %s" --author "Kazuhiko Hotta"
 func CmdGet(c *cli.Context) {
-	config, err := ioutil.ReadFile(".dailylog")
+	rootPath, err := getRoot()
 	if err != nil {
-		panic(err)
+		pp.Println(err.Error())
+		os.Exit(1)
+	}
+	config, err := ioutil.ReadFile(filepath.Join(rootPath, ".dailylog"))
+	if err != nil {
+		pp.Println(err.Error())
+		os.Exit(1)
 	}
 	var ago = "today"
 
@@ -71,7 +95,7 @@ func CmdGet(c *cli.Context) {
 		"--before=\"" + timestamps.To.String() + "\"",
 	}
 	if author != "" {
-		args = append(args, "--author=" + author)
+		args = append(args, "--author="+author)
 	}
 
 	out, err := exec.Command("git", args...).CombinedOutput()

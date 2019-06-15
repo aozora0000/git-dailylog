@@ -1,3 +1,7 @@
+## 0.5.0 (2019-6-16)
+
+Initialize & Get Command Work On Git Root Directory 
+
 ## 0.4.0 (2018-09-21)
 
 Initialize File Copy When Exist ~/.dailylog

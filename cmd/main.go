@@ -13,12 +13,11 @@ import (
 )
 
 var Name = "git-dailylog"
-var Version = "0.6.2"
+var Version = "0.6.0"
 var GlobalFlags = []cli.Flag{}
 var Slug = "aozora0000/git-dailylog"
 
 func main() {
-
 	app := cli.NewApp()
 	app.Name = Name
 	app.Version = Version
@@ -44,6 +43,7 @@ var selfUpdateCommand = cli.Command{
 	Name:  "selfupdate",
 	Usage: "latest update from server",
 	Action: func(context *cli.Context) error {
+		selfupdate.EnableLog()
 		latest, found, err := selfupdate.DetectLatest(Slug)
 		if err != nil {
 			log.Println("Error occurred while detecting version:", err)

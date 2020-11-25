@@ -12,7 +12,7 @@ import (
 )
 
 var Name = "git-dailylog"
-var Version = "0.5.0"
+var Version = "0.6.0"
 var GlobalFlags = []cli.Flag{}
 var Slug = "aozora0000/git-dailylog"
 

@@ -4,7 +4,9 @@ before:
   hooks:
     - go mod download
 builds:
-  - env:
+  - main: cmd/main.go
+    binary: git-dailylog
+    env:
       - CGO_ENABLED=0
     goos:
       - linux

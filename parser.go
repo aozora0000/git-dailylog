@@ -1,4 +1,4 @@
-package command
+package git_dailylog
 
 import (
 	"errors"

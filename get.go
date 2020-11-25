@@ -2,26 +2,25 @@ package git_dailylog
 
 import (
 	"fmt"
-	"github.com/codegangsta/cli"
 	"github.com/k0kubun/pp"
+	"github.com/urfave/cli/v2"
 	"io/ioutil"
-	"os"
 	"os/exec"
 	"path/filepath"
 	"strings"
 )
 
-var CmdGetCommand = cli.Command{
+var CmdGetCommand = &cli.Command{
 	Name:   "get",
 	Usage:  "Get abarge commit log formatted from .dailylog",
 	Action: CmdGet,
 	Flags: []cli.Flag{
-		cli.StringFlag{
+		&cli.StringFlag{
 			Name:  "author",
 			Value: "",
 			Usage: "commit author filter",
 		},
-		cli.BoolFlag{
+		&cli.BoolFlag{
 			Name:  "reverse",
 			Usage: "reverse output",
 		},
@@ -63,16 +62,16 @@ func (s *Lines) Reverse() chan string {
 }
 
 // git log --after="2015-09-25 00:00:00" --before="2015-09-26 00:00:00" --date=local --pretty=format:"%h: %ad %an: %s" --author "Kazuhiko Hotta"
-func CmdGet(c *cli.Context) {
+func CmdGet(c *cli.Context) error {
 	rootPath, err := getRoot()
 	if err != nil {
 		pp.Println(err.Error())
-		os.Exit(1)
+		return err
 	}
 	config, err := ioutil.ReadFile(filepath.Join(rootPath, ".dailylog"))
 	if err != nil {
 		pp.Println(err.Error())
-		os.Exit(1)
+		return err
 	}
 	var ago = "today"
 
@@ -101,11 +100,11 @@ func CmdGet(c *cli.Context) {
 	out, err := exec.Command("git", args...).CombinedOutput()
 	if err != nil {
 		pp.Println(err.Error())
-		os.Exit(1)
+		return err
 	}
 	lines := &Lines{strings.Split(string(out), "\n")}
 	for line := range lines.Get(c.Bool("reverse")) {
 		fmt.Println(strings.Trim(line, "\""))
 	}
-	os.Exit(0)
+	return nil
 }

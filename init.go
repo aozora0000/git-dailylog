@@ -3,42 +3,42 @@ package git_dailylog
 import (
 	"fmt"
 	"github.com/Atrox/homedir"
-	"github.com/codegangsta/cli"
 	"github.com/k0kubun/pp"
+	"github.com/urfave/cli/v2"
 	"io"
 	"os"
 	"path/filepath"
 )
 
-var CmdInitCommand = cli.Command{
+var CmdInitCommand = &cli.Command{
 	Name:   "init",
 	Usage:  "Initialize dailylog fotmat file. format reference: https://git-scm.com/docs/pretty-formats",
 	Action: CmdInit,
 	Flags:  []cli.Flag{},
 }
 
-func CmdInit(c *cli.Context) {
+func CmdInit(c *cli.Context) error {
 	path, err := homedir.Expand("~/.dailylog")
 	if err != nil {
 		pp.Println(err.Error())
-		os.Exit(1)
+		return err
 	}
 	rootPath, err := getRoot()
 	if err != nil {
 		pp.Println(err.Error())
-		os.Exit(1)
+		return err
 	}
 	dest, err := os.Create(filepath.Join(rootPath, ".dailylog"))
 	if err != nil {
 		pp.Println(err.Error())
-		os.Exit(1)
+		return err
 	}
 	defer dest.Close()
 	if Exists(path) {
 		src, err := os.Open(path)
 		if err != nil {
 			pp.Println(err.Error())
-			os.Exit(1)
+			return err
 		}
 		defer src.Close()
 		io.Copy(dest, src)
@@ -47,7 +47,7 @@ func CmdInit(c *cli.Context) {
 		io.Copy(dest, Initialfile)
 		fmt.Println(".dailylog create success")
 	}
-	os.Exit(0)
+	return nil
 }
 
 func Exists(filename string) bool {

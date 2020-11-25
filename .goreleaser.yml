@@ -34,8 +34,7 @@ changelog:
       - Merge branch
       - go mod tidy
 archives:
-  - name_template: '{{ .ProjectName }}_{{ .Os }}_{{ .Arch }}{{ if .Arm }}v{{ .Arm }}{{ end }}'
-    replacements:
+  - replacements:
       darwin: Darwin
       linux: Linux
       windows: Windows

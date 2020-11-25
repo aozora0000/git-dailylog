@@ -1,18 +1,19 @@
 package main
 
 import (
+	"bufio"
+	"errors"
 	"fmt"
 	git_dailylog "github.com/aozora0000/git-dailylog"
 	"github.com/blang/semver"
 	"github.com/codegangsta/cli"
-	"github.com/pkg/errors"
 	"github.com/rhysd/go-github-selfupdate/selfupdate"
 	"log"
 	"os"
 )
 
 var Name = "git-dailylog"
-var Version = "0.6.1"
+var Version = "0.6.0"
 var GlobalFlags = []cli.Flag{}
 var Slug = "aozora0000/git-dailylog"
 
@@ -39,25 +40,41 @@ func main() {
 	app.Run(os.Args)
 }
 
-func DoSelfUpdate(version string, slug string) (bool, error) {
-	v := semver.MustParse(version)
-	latest, err := selfupdate.UpdateSelf(v, slug)
-	return !latest.Version.Equals(v), errors.Wrap(err, "Binary update failed")
-}
-
 var selfUpdateCommand = cli.Command{
 	Name:  "selfupdate",
 	Usage: "latest update from server",
 	Action: func(context *cli.Context) error {
-		updated, err := DoSelfUpdate(Version, Slug)
+		latest, found, err := selfupdate.DetectLatest(Slug)
+		if err != nil {
+			log.Println("Error occurred while detecting version:", err)
+			return err
+		}
+		v := semver.MustParse(Version)
+		if !found || latest.Version.LTE(v) {
+			log.Println("Current version is the latest")
+			return nil
+		}
+
+		fmt.Print("Do you want to update to", latest.Version, "? (y/n): ")
+		input, err := bufio.NewReader(os.Stdin).ReadString('\n')
 		if err != nil {
 			return err
 		}
-		if updated {
-			log.Println("Current binary is the latest version", Version)
-		} else {
-			log.Println("Successfully updated to version", Version)
+		if input != "y\n" && input != "n\n" {
+			return errors.New("Invalid input")
 		}
+		if input == "n\n" {
+			return nil
+		}
+
+		exe, err := os.Executable()
+		if err != nil {
+			return err
+		}
+		if err := selfupdate.UpdateTo(latest.AssetURL, exe); err != nil {
+			return err
+		}
+		log.Println("Successfully updated to version", latest.Version)
 		return nil
 	},
 	Flags: []cli.Flag{},

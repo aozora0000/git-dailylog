@@ -43,7 +43,10 @@ var selfUpdateCommand = cli.Command{
 	Name:  "selfupdate",
 	Usage: "latest update from server",
 	Action: func(context *cli.Context) error {
-		selfupdate.EnableLog()
+		if context.Bool("verbose") {
+			selfupdate.EnableLog()
+		}
+
 		latest, found, err := selfupdate.DetectLatest(Slug)
 		if err != nil {
 			log.Println("Error occurred while detecting version:", err)
@@ -55,7 +58,7 @@ var selfUpdateCommand = cli.Command{
 			return nil
 		}
 
-		fmt.Print("Do you want to update to", latest.Version, "? (y/n): ")
+		fmt.Print("Do you want to update to ", latest.Version, "? (y/n): ")
 		input, err := bufio.NewReader(os.Stdin).ReadString('\n')
 		if err != nil {
 			return err
@@ -77,5 +80,10 @@ var selfUpdateCommand = cli.Command{
 		log.Println("Successfully updated to version", latest.Version)
 		return nil
 	},
-	Flags: []cli.Flag{},
+	Flags: []cli.Flag{
+		cli.BoolFlag{
+			Name:  "verbose,v",
+			Usage: "Verbose",
+		},
+	},
 }

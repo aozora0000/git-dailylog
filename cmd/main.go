@@ -12,7 +12,7 @@ import (
 )
 
 var Name = "git-dailylog"
-var Version = "0.6.0"
+var Version = "0.6.1"
 var GlobalFlags = []cli.Flag{}
 var Slug = "aozora0000/git-dailylog"
 
@@ -47,7 +47,7 @@ func DoSelfUpdate(version string, slug string) (bool, error) {
 
 var selfUpdateCommand = cli.Command{
 	Name:  "selfupdate",
-	Usage: "Get abarge commit log formatted from .dailylog",
+	Usage: "latest update from server",
 	Action: func(context *cli.Context) error {
 		updated, err := DoSelfUpdate(Version, Slug)
 		if err != nil {

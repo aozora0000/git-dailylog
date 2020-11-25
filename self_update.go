@@ -9,11 +9,13 @@ import (
 	"github.com/urfave/cli/v2"
 	"log"
 	"os"
+	"strings"
 )
 
 var SelfUpdateCommand = &cli.Command{
-	Name:  "selfupdate,self-update",
-	Usage: "latest update from server",
+	Name:    "selfupdate",
+	Aliases: []string{"self-update"},
+	Usage:   "latest update from server",
 	Action: func(context *cli.Context) error {
 		if context.Bool("verbose") {
 			selfupdate.EnableLog()
@@ -23,7 +25,7 @@ var SelfUpdateCommand = &cli.Command{
 			log.Println("Error occurred while detecting version:", err)
 			return err
 		}
-		v := semver.MustParse(context.App.Version)
+		v := semver.MustParse(strings.ReplaceAll(context.App.Version, "v", ""))
 		if !found || latest.Version.LTE(v) {
 			log.Println("Current version is the latest")
 			return nil
@@ -53,8 +55,9 @@ var SelfUpdateCommand = &cli.Command{
 	},
 	Flags: []cli.Flag{
 		&cli.BoolFlag{
-			Name:  "verbose,v",
-			Usage: "Verbose",
+			Name:    "verbose",
+			Aliases: []string{"v"},
+			Usage:   "Verbose",
 		},
 	},
 }

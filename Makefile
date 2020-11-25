@@ -7,3 +7,6 @@ clean:
 
 release:
 	goreleaser --rm-dist
+
+install: build
+	sudo mv git-dailylog `which git-dailylog`

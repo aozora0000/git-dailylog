@@ -28,5 +28,10 @@ func main() {
 		os.Exit(2)
 	}
 
-	app.Run(os.Args)
+	err := app.Run(os.Args)
+	if err != nil {
+		fmt.Println(err.Error())
+		os.Exit(1)
+	}
+	os.Exit(0)
 }
